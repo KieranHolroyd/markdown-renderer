@@ -18,15 +18,46 @@ async function loadUI() {
   const pre = document.querySelector("pre")
 
   if (pre) {
-    const code = pre.innerHTML
+    const code = pre.innerText
     const html = await marked.parse(code)
 
-    const div = document.createElement("div")
-    div.classList.add("markdown-body")
-    div.classList.add("markdown-preview")
-    div.id = "markdown-preview"
-    div.innerHTML = html
+    const PageContainer = document.createElement("div")
+    PageContainer.classList.add("page-container")
 
-    body.replaceChildren(div)
+    const MarkdownEditor = document.createElement("textarea")
+    MarkdownEditor.classList.add("markdown-editor")
+    MarkdownEditor.id = "markdown-editor"
+    MarkdownEditor.innerHTML = code
+    MarkdownEditor.addEventListener("input", updatePreview)
+    MarkdownEditor.addEventListener("keydown", updatePreview)
+    PageContainer.appendChild(MarkdownEditor)
+
+    const MarkdownPreview = document.createElement("div")
+    MarkdownPreview.classList.add("markdown-body")
+    MarkdownPreview.classList.add("markdown-preview")
+    MarkdownPreview.id = "markdown-preview"
+    MarkdownPreview.innerHTML = html
+    PageContainer.appendChild(MarkdownPreview)
+
+    body.replaceChildren(PageContainer)
+  }
+}
+
+let UpdatePreviewTimeout = null
+async function updatePreview(event: InputEvent) {
+  if (UpdatePreviewTimeout) {
+    clearTimeout(UpdatePreviewTimeout)
+  }
+
+  UpdatePreviewTimeout = window.setTimeout(updatePreviewDebounced, 200, event)
+}
+
+async function updatePreviewDebounced(event: InputEvent) {
+  if (event.target instanceof HTMLTextAreaElement) {
+    const code = event.target.value
+    const html = await marked.parse(code)
+
+    const MarkdownPreview = document.getElementById("markdown-preview")
+    MarkdownPreview.innerHTML = html
   }
 }

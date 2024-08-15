@@ -1,20 +1,37 @@
-/* .markdown-body {
-  font-family: "Inter", sans-serif;
+body {
+  padding: 0;
+  margin: 0;
+}
+.page-container {
+  display: flex;
+  flex-direction: row;
+  gap: 16px;
+  padding: 16px;
 
-  box-sizing: border-box;
-  min-width: 200px;
-  max-width: 100%;
-  padding: 1em;
+  height: calc(100vh - 32px);
+  width: calc(100% - 32px);
+  background-color: #6e768166;
+  /* overflow: hidden; */
 
-  pre {
+  .markdown-editor {
+    width: calc(50% - 2.5em);
     padding: 1em;
-    width: fit-content;
-    max-width: calc(100% - 1em);
-    overflow-x: auto;
+    max-height: 100%;
+
     border-radius: 0.5em;
     background-color: #333;
   }
-} */
+
+  .markdown-preview {
+    width: calc(50% - 2.5em);
+    padding: 1em;
+    max-height: 100%;
+
+    border-radius: 0.5em;
+    background-color: #333;
+    overflow-y: auto;
+  }
+}
 
 .markdown-body {
   --base-size-4: 0.25rem;
